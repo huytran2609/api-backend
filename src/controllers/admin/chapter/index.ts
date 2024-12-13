@@ -2,14 +2,16 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { Chapter } from '~models/Chapter';
 
 export const add = async (
-  request: FastifyRequest<{ Body: { chapter_name: string; course_id: string } }>,
+  request: FastifyRequest<{ Body: { chapter_name: string; course_id: string; order: number } }>,
   reply: FastifyReply,
 ) => {
   const chapter_name = request.body.chapter_name;
   const course_id = request.body.course_id;
+  const order = request.body.order;
   const newChapter = new Chapter({
     course_id,
     chapter_name,
+    order,
   });
   const result = await newChapter.save();
   await reply.code(200).send(result);

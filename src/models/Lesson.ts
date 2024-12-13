@@ -12,6 +12,7 @@ const lessonSchema = new Schema<ILesson>(
   {
     chapter_id: {
       type: Schema.Types.ObjectId,
+      ref: 'chapter',
       required: true,
     },
     lesson_name: {
@@ -24,7 +25,7 @@ const lessonSchema = new Schema<ILesson>(
     },
     order: {
       type: Number,
-      required: true,
+      required: false,
     },
   },
   { timestamps: true },

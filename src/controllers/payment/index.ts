@@ -68,6 +68,6 @@ export const checkPayment = async (
   const user = request.user;
   const isPaid = await Payment.exists({ user_id: user!._id, course_id: courseId, payment_status: EPaymentStatus.PAID });
   await reply.code(200).send({
-    is_paid: Boolean(isPaid?._id),
+    payment_status: Boolean(isPaid?._id),
   });
 };

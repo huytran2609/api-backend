@@ -7,6 +7,8 @@ import course from './course';
 import payment from './payment';
 import learning from './learning';
 import chatbot from './chatbot';
+import search from './search';
+import mycourse from './mycourse';
 
 export default async (server: FastifyInstance, options: FastifyPluginOptions) => {
   server.get('/', {}, async (request, reply) => {
@@ -20,4 +22,6 @@ export default async (server: FastifyInstance, options: FastifyPluginOptions) =>
   server.register(payment, { prefix: 'payment' });
   server.register(learning, { prefix: 'learning' });
   server.register(chatbot, { prefix: 'chatbot' });
+  server.register(search, { prefix: 'search' });
+  server.register(mycourse, { prefix: 'mycourse' });
 };

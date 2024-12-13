@@ -9,6 +9,7 @@ import { User } from '~models/User';
 import _ from 'lodash';
 import { Tag } from '~models/Tag';
 import { quickSort } from '~utils/quickSort';
+import { PipelineStage } from 'mongoose';
 export const getCourse = async (request: FastifyRequest<{ Params: { course_id: string } }>, reply: FastifyReply) => {
   const courseId = request.params.course_id;
 
@@ -84,3 +85,43 @@ export const getCourse = async (request: FastifyRequest<{ Params: { course_id: s
   };
   await reply.code(200).send(result);
 };
+
+export const getCoursesOfMaintype = async (request, reply) => {
+  const courseId = request.query.course_id;
+  const take = request.query.take;
+  const random = request.query.random;
+  const course = await Course.findById(courseId, { _id: 1, detail_id: 1 });
+  const detail = await Detail.findById(course?.detail_id, { _id: 1, section_id: 1 });
+  const section = await Section.findById(detail?.section_id, { _id: 1, maintype_id: 1 });
+  const maintype = await Maintype.findById(section?.maintype_id, { _id: 1 });
+  const sections = await Section.find({ maintype_id: maintype?._id }, { _id: 1 });
+  const details = await Detail.find({ section_id: { $in: sections.map((x) => x._id) } }, { _id: 1 });
+  const courses = await Course.aggregate(
+    [
+      random ? { $sample: { size: parseInt(take, 10) } } : undefined,
+      take ? { $limit: parseInt(take, 10) } : undefined,
+      { $match: { detail_id: { $in: details.map((x) => x._id) } } },
+      { $project: { _id: 1 } },
+    ].filter(Boolean) as PipelineStage[],
+  );
+  await reply.code(200).send(courses);
+};
+
+export const allCourses = async (request, reply) => {
+  const courseLevel = request.query.course_level;
+  const courses = await Course.find(removeUndefinedProps({ course_level: courseLevel || undefined }), { _id: 1 });
+  await reply.code(200).send(courses);
+};
+export const randomCourses = async (request, reply) => {
+  const courses = await Course.aggregate([{ $sample: { size: 10 } }, { $limit: 10 }, { $project: { _id: 1 } }]).exec();
+  await reply.code(200).send(courses);
+};
+
+function removeUndefinedProps(obj) {
+  for (const prop in obj) {
+    if (obj.hasOwnProperty(prop) && obj[prop] === undefined) {
+      delete obj[prop];
+    }
+  }
+  return obj;
+}

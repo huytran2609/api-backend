@@ -6,7 +6,7 @@ export const add = async (request: FastifyRequest, reply: FastifyReply) => {
   const author_id = request.form!.author_id;
   const detail_id = request.form!.detail_id;
   const course_level = request.form!.course_level;
-  const course_language = request.form!.course_language;
+  // const course_language = request.form!.course_language;
   const course_name = request.form!.course_name;
   const approval_status = request.form!.approval_status;
   const course_fee = request.form!.course_fee;
@@ -18,7 +18,7 @@ export const add = async (request: FastifyRequest, reply: FastifyReply) => {
     author_id,
     detail_id,
     course_level,
-    course_language,
+    // course_language,
     course_name,
     approval_status,
     course_fee,
@@ -41,6 +41,14 @@ export const remove = async (request: FastifyRequest<{ Params: { _id: string } }
 };
 
 export const all = async (request: FastifyRequest, reply: FastifyReply) => {
-  const result = await Course.find();
-  await reply.code(200).send(result);
+  const courses = await Course.find().populate('author_id', 'fullname');
+    
+    const result = courses.map(course => {
+      return {
+        ...course.toObject(),
+        course_img: `public/course/${course._id}/course_img.jpeg`
+      };
+    });
+    
+    await reply.code(200).send(result);
 };

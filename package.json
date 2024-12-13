@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon src/app.ts",
+    "dev": "cross-env NODE_ENV=development npm-run-all --parallel watch:rollup watch:nodemon",
     "lint": "eslint src/**/*.ts",
     "build": "cross-env NODE_ENV=production rollup -c rollup.config.js",
     "start:development": "cross-env NODE_ENV=development node ./dist/app.js",

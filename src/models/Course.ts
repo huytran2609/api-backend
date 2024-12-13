@@ -18,10 +18,12 @@ const courseSchema = new Schema<ICourse>(
   {
     author_id: {
       type: Schema.Types.ObjectId,
+      ref: 'user',
       required: true,
     },
     detail_id: {
       type: Schema.Types.ObjectId,
+      ref: 'detail',
       required: true,
     },
     course_level: {
@@ -31,7 +33,7 @@ const courseSchema = new Schema<ICourse>(
     },
     course_language: {
       type: Number,
-      required: true,
+      required: false,
       enum: ELanguage,
     },
     course_name: {

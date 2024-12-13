@@ -31,6 +31,18 @@ export const remove = async (request: FastifyRequest<{ Params: { _id: string } }
 };
 
 export const all = async (request: FastifyRequest, reply: FastifyReply) => {
-  const result = await Detail.find();
+  const result = await Detail.find()
+    .populate({
+      path: 'tag_id',
+      select: 'tag_name',
+    })
+    .populate({
+      path: 'section_id',
+      select: 'section_name',
+      populate: {
+        path: 'maintype_id',
+        select: 'type_name',
+      },
+    });
   await reply.code(200).send(result);
 };

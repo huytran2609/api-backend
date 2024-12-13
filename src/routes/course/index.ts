@@ -1,5 +1,7 @@
 import { FastifyInstance } from 'fastify';
-import { getCourse } from '~controllers/course';
+import { getCourse, getCoursesOfMaintype, randomCourses, allCourses } from '~controllers/course';
+import { ELevel } from '~types/course';
+import { getEnumValues } from '~utils/getEnumValue';
 
 export default async (server: FastifyInstance) => {
   server.get(
@@ -17,4 +19,34 @@ export default async (server: FastifyInstance) => {
     },
     getCourse,
   );
+  server.get(
+    '/courses_of_maintype',
+    {
+      schema: {
+        querystring: {
+          type: 'object',
+          properties: {
+            course_id: { type: 'string' },
+            take: { type: 'number' },
+            random: { type: 'boolean' },
+          },
+          required: ['course_id'],
+        },
+      },
+    },
+    getCoursesOfMaintype,
+  );
+  server.get(
+    '/all_courses',
+    {
+      schema: {
+        querystring: {
+          type: 'object',
+          properties: { course_level: { type: 'number', enum: getEnumValues(ELevel).map((x) => Number(x)) } },
+        },
+      },
+    },
+    allCourses,
+  );
+  server.get('/random_courses', randomCourses);
 };

@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { add, all, remove } from '~controllers/admin/section';
+import { add, all, getSectionByMainTypeId, remove } from '~controllers/admin/section';
 
 export default async (server: FastifyInstance) => {
   server.post(
@@ -33,5 +33,20 @@ export default async (server: FastifyInstance) => {
       },
     },
     remove,
+  );
+  server.get(
+    '/section_by_main_type_id',
+    {
+      schema: {
+        querystring: {
+          type: 'object',
+          properties: {
+            maintype_id: { type: 'string' },
+          },
+          required: ['maintype_id'],
+        },
+      },
+    },
+    getSectionByMainTypeId,
   );
 };

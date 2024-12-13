@@ -11,6 +11,7 @@ const sectionSchema = new Schema<ISection>(
   {
     maintype_id: {
       type: Schema.Types.ObjectId,
+      ref: 'maintype',
       required: true,
     },
     section_name: {
@@ -19,7 +20,7 @@ const sectionSchema = new Schema<ISection>(
     },
     order: {
       type: Number,
-      required: true,
+      required: false,
     },
   },
   { timestamps: true },

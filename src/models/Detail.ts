@@ -11,10 +11,12 @@ const detailSchema = new Schema<IDetail>(
   {
     section_id: {
       type: Schema.Types.ObjectId,
+      ref: 'section',
       required: true,
     },
     tag_id: {
       type: Schema.Types.ObjectId,
+      ref: 'tag',
       required: true,
     },
 

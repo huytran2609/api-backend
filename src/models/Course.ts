@@ -42,7 +42,7 @@ const courseSchema = new Schema<ICourse>(
     },
     approval_status: {
       type: Number,
-      required: true,
+      required: false,
       enum: EApprovalsStatus,
     },
     course_fee: {

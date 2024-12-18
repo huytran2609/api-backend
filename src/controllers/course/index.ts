@@ -97,12 +97,18 @@ export const getCoursesOfMaintype = async (request, reply) => {
   const sections = await Section.find({ maintype_id: maintype?._id }, { _id: 1 });
   const details = await Detail.find({ section_id: { $in: sections.map((x) => x._id) } }, { _id: 1 });
   const courses = await Course.aggregate(
+    // [
+    //   random ? { $sample: { size: parseInt(take, 10) } } : undefined,
+    //   take ? { $limit: parseInt(take, 10) } : undefined,
+    //   { $match: { detail_id: { $in: details.map((x) => x._id) } } },
+    //   { $project: { _id: 1 } },
+    // ].filter(Boolean) as PipelineStage[],
     [
-      random ? { $sample: { size: parseInt(take, 10) } } : undefined,
-      take ? { $limit: parseInt(take, 10) } : undefined,
       { $match: { detail_id: { $in: details.map((x) => x._id) } } },
+      ...(random ? [{ $sample: { size: take } }] : []),
+      ...(random ? [] : [{ $limit: take }]),
       { $project: { _id: 1 } },
-    ].filter(Boolean) as PipelineStage[],
+    ],
   );
   await reply.code(200).send(courses);
 };

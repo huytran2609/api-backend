@@ -38,25 +38,11 @@ const { pubClient, subClient } = await redisServer();
 await Promise.all([
   app.register(cors, {
     credentials: true,
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      `http://192.168.1.7:3001`,
-      'https://studio.apollographql.com',
-      'https://iscv.ftisu.vn',
-      'https://business.iscv.ftisu.vn',
-    ],
+    origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5173'],
   }),
   app.register(socketio, {
     cors: {
-      origin: [
-        'http://localhost:3000',
-        'http://localhost:3001',
-        `http://192.168.1.7:3001`,
-        'https://studio.apollographql.com',
-        'https://iscv.ftisu.vn',
-        'https://business.iscv.ftisu.vn',
-      ],
+      origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5173'],
     },
   }),
   app.register(rateLimit, {

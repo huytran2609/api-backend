@@ -7,6 +7,8 @@ import tag from './tag';
 import detail from './detail';
 import chapter from './chapter';
 import lesson from './lesson';
+import payment from './payment';
+import report from './report';
 
 export default async (server: FastifyInstance) => {
   server.register(user, { prefix: 'user' });
@@ -17,4 +19,6 @@ export default async (server: FastifyInstance) => {
   server.register(detail, { prefix: 'detail' });
   server.register(chapter, { prefix: 'chapter' });
   server.register(lesson, { prefix: 'lesson' });
+  server.register(payment, { prefix: 'payment' });
+  server.register(report, { prefix: 'report' });
 };

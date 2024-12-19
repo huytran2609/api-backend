@@ -21,7 +21,7 @@ const lessonSchema = new Schema<ILesson>(
     },
     duration: {
       type: Number,
-      required: true,
+      required: false,
     },
     order: {
       type: Number,

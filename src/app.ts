@@ -46,7 +46,7 @@ await Promise.all([
     },
   }),
   app.register(rateLimit, {
-    max: 1000,
+    max: 5000,
     timeWindow: '1 minute',
   }),
   app.register(helmet, {

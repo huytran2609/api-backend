@@ -3,7 +3,7 @@ import { Course } from '~models/Course';
 import { EApprovalsStatus, ECourseStatus, ELanguage, ELevel } from '~types/course';
 import fs from 'fs';
 export const add = async (request: FastifyRequest, reply: FastifyReply) => {
-  const author_id = request.form!.author_id;
+  // const author_id = request.form!.author_id;
   const detail_id = request.form!.detail_id;
   const course_level = request.form!.course_level;
   // const course_language = request.form!.course_language;
@@ -15,7 +15,7 @@ export const add = async (request: FastifyRequest, reply: FastifyReply) => {
   const course_img = request.form!.course_img;
 
   const newCourse = new Course({
-    author_id,
+    // author_id,
     detail_id,
     course_level,
     // course_language,
@@ -41,7 +41,7 @@ export const remove = async (request: FastifyRequest<{ Params: { _id: string } }
 };
 
 export const all = async (request: FastifyRequest, reply: FastifyReply) => {
-  const courses = await Course.find().populate('author_id', 'fullname');
+  const courses = await Course.find().populate('detail_id', 'detail_name');
 
   const result = courses.map((course) => {
     return {

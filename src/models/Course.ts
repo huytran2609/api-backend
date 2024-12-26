@@ -19,7 +19,7 @@ const courseSchema = new Schema<ICourse>(
     author_id: {
       type: Schema.Types.ObjectId,
       ref: 'user',
-      required: true,
+      required: false,
     },
     detail_id: {
       type: Schema.Types.ObjectId,
